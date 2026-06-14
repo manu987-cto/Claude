@@ -105,7 +105,10 @@ window.addEventListener('scroll', () => {
   const WHATSAPP = '33669614755';
   const checks = [...form.querySelectorAll('.opt input[type=checkbox]')];
   const totalEl = document.getElementById('quoteTotal');
+  const depositEl = document.getElementById('quoteDeposit');
   const noteEl = document.getElementById('quoteNote');
+  const DEPOSIT_RATE = 0.15;
+  const deposit = total => Math.round(total * DEPOSIT_RATE);
 
   function selected(){
     const items = []; let total = 0; let devis = false;
@@ -120,6 +123,7 @@ window.addEventListener('scroll', () => {
   function update(){
     const { items, total, devis } = selected();
     totalEl.textContent = total + ' €';
+    if(depositEl) depositEl.textContent = deposit(total) + ' €';
     noteEl.textContent = devis ? '+ certaines prestations sur devis' : (items.length ? '' : 'Sélectionnez vos prestations ci-dessus.');
   }
   checks.forEach(c => c.addEventListener('change', update));
@@ -136,7 +140,8 @@ window.addEventListener('scroll', () => {
     }
     let msg = 'Bonjour Sarah, je souhaite une demande / un devis :\n\n';
     msg += 'Prestations :\n' + items.map(i => '• ' + i).join('\n') + '\n\n';
-    msg += 'Total estimé : ' + total + ' €' + (devis ? ' (+ sur devis)' : '') + '\n\n';
+    msg += 'Total estimé : ' + total + ' €' + (devis ? ' (+ sur devis)' : '') + '\n';
+    msg += 'Acompte (15 %) pour bloquer le RDV : ' + deposit(total) + ' €\n\n';
     msg += 'Nom : ' + (f.nom.value || '-') + '\n';
     msg += 'Téléphone : ' + (f.tel.value || '-') + '\n';
     if(f.email.value) msg += 'E-mail : ' + f.email.value + '\n';

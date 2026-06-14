@@ -385,6 +385,11 @@ section{position:relative}
 .qf-total{display:flex;justify-content:space-between;align-items:baseline}
 .qf-total span{text-transform:uppercase;letter-spacing:2px;font-size:.85rem;color:var(--muted)}
 .qf-total strong{font-family:'Cormorant Garamond',serif;font-size:2.6rem;color:var(--or-clair)}
+.qf-deposit{display:flex;justify-content:space-between;align-items:center;
+  padding-top:14px;border-top:1px dashed rgba(201,163,107,.3)}
+.qf-deposit span{font-size:.9rem;color:var(--creme)}
+.qf-deposit span em{color:var(--or);font-style:normal}
+.qf-deposit strong{font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:var(--or)}
 .qf-note{color:var(--or);font-size:.9rem;min-height:1em}
 .qf-actions{display:flex;gap:14px;flex-wrap:wrap}
 .qf-hint{color:var(--muted);font-size:.82rem;font-weight:300}

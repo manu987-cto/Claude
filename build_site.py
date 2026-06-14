@@ -449,12 +449,16 @@ contact = f"""{head('Contact & Réservation — Ongles_by.Sarah Vannes',
           <span>Total estimé</span>
           <strong id="quoteTotal">0 €</strong>
         </div>
+        <div class="qf-deposit">
+          <span>Acompte à régler pour bloquer le RDV <em>(15 %)</em></span>
+          <strong id="quoteDeposit">0 €</strong>
+        </div>
         <p class="qf-note" id="quoteNote"></p>
         <div class="qf-actions">
           <button type="submit" class="btn btn-primary big">Envoyer ma demande</button>
           <a href="{PLANITY}" target="_blank" rel="noopener" class="btn btn-ghost">Réserver sur Planity</a>
         </div>
-        <p class="qf-hint">À l'envoi, votre récapitulatif s'ouvre dans WhatsApp pour être transmis directement à Sarah. L'estimation est indicative ; certaines prestations sont sur devis.</p>
+        <p class="qf-hint">À l'envoi, votre récapitulatif s'ouvre dans WhatsApp pour être transmis directement à Sarah. Un acompte de 15 % est demandé pour bloquer définitivement votre réservation. L'estimation est indicative ; certaines prestations sont sur devis.</p>
       </div>
     </form>
   </section>
