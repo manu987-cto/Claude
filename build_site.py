@@ -191,6 +191,10 @@ def footer():
       <a href="{INSTA}" target="_blank" rel="noopener">@ongles_by.sarah</a>
       <a href="{PLANITY}" target="_blank" rel="noopener">Réserver sur Planity</a>
     </div>
+    <div class="footer-legal">
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="confidentialite.html">Politique de confidentialité</a>
+    </div>
     <p class="copy">© <span id="year"></span> Ongles_by.Sarah — Tous droits réservés.</p>
   </footer>
   <script src="script.js"></script>
@@ -412,9 +416,14 @@ contact = f"""{head('Contact & Réservation — Ongles_by.Sarah Vannes',
           <div class="contact-row reveal-up"><span class="ci">✦</span><span><small>Plus Code</small>M67M+3C Vannes</span></div>
         </div>
       </div>
-      <div class="contact-map reveal-up">
-        <iframe title="Localisation Ongles_by.Sarah" src="https://www.google.com/maps?q=Parc%20Pompidou%2C%2056000%20Vannes&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
+      <a class="contact-map reveal-up" href="https://maps.google.com/?q=Parc+Pompidou,+56000+Vannes" target="_blank" rel="noopener" aria-label="Voir l'itinéraire sur Google Maps">
+        <div class="map-card">
+          <span class="map-pin">⌖</span>
+          <strong>Parc Pompidou</strong>
+          <span>56000 Vannes</span>
+          <span class="map-link">Voir l'itinéraire →</span>
+        </div>
+      </a>
     </div>
   </section>
 
@@ -464,8 +473,75 @@ contact = f"""{head('Contact & Réservation — Ongles_by.Sarah Vannes',
   </section>
 {footer()}"""
 
+# ---------- MENTIONS LÉGALES
+mentions = f"""{head('Mentions légales — Ongles_by.Sarah Vannes',
+                     'Mentions légales du site Ongles_by.Sarah, salon de manucure et extensions de cils à Vannes.')}
+{header('')}
+{page_hero('Informations légales', 'Mentions légales', 'Conformément à la loi pour la confiance dans l’économie numérique (LCEN).')}
+  <section class="legal">
+    <article class="legal-card">
+      <h2>Éditeur du site</h2>
+      <p><strong>Ongles_by.Sarah</strong> — Salon de manucure &amp; prothésie ongulaire<br>
+      Parc Pompidou, 56000 Vannes<br>
+      Téléphone : <a href="tel:+33669614755">06 69 61 47 55</a><br>
+      Instagram : <a href="{INSTA}" target="_blank" rel="noopener">@ongles_by.sarah</a></p>
+      <p class="legal-todo">À compléter : nom et prénom de l'exploitante · statut juridique (micro-entreprise, EI, EURL…) · numéro SIRET · numéro de TVA intracommunautaire le cas échéant.</p>
+    </article>
+    <article class="legal-card">
+      <h2>Directrice de la publication</h2>
+      <p>Sarah — exploitante du salon Ongles_by.Sarah.</p>
+    </article>
+    <article class="legal-card">
+      <h2>Hébergement</h2>
+      <p>Le site est hébergé par <strong>GitHub, Inc.</strong> (GitHub Pages)<br>
+      88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis<br>
+      <a href="https://github.com" target="_blank" rel="noopener">github.com</a></p>
+    </article>
+    <article class="legal-card">
+      <h2>Propriété intellectuelle</h2>
+      <p>L'ensemble des contenus du site (logo, photographies des réalisations, textes) est la propriété exclusive d'Ongles_by.Sarah. Toute reproduction, même partielle, est interdite sans autorisation écrite préalable.</p>
+    </article>
+    <article class="legal-card">
+      <h2>Réservation &amp; acompte</h2>
+      <p>Les réservations s'effectuent via la plateforme <a href="{PLANITY}" target="_blank" rel="noopener">Planity</a>. Un acompte de 15 % est demandé pour confirmer et bloquer le rendez-vous. Les conditions d'annulation et de remboursement sont précisées lors de la réservation sur Planity.</p>
+    </article>
+    <div class="center-cta reveal-up"><a href="contact.html" class="btn btn-ghost">Retour au contact</a></div>
+  </section>
+{footer()}"""
+
+# ---------- CONFIDENTIALITÉ
+confidentialite = f"""{head('Politique de confidentialité — Ongles_by.Sarah Vannes',
+                           'Politique de confidentialité et protection des données (RGPD) du site Ongles_by.Sarah à Vannes.')}
+{header('')}
+{page_hero('Vos données personnelles', 'Politique de confidentialité', 'Protection de vos données conformément au RGPD.')}
+  <section class="legal">
+    <article class="legal-card">
+      <h2>Données collectées</h2>
+      <p>Le formulaire de demande / devis du site collecte uniquement les informations que vous saisissez : nom et prénom, téléphone, e-mail (facultatif), date souhaitée et message, ainsi que les prestations sélectionnées.</p>
+    </article>
+    <article class="legal-card">
+      <h2>Finalité &amp; transmission</h2>
+      <p>Ces informations servent exclusivement à traiter votre demande et à vous établir un devis. À l'envoi du formulaire, votre récapitulatif est transmis via <strong>WhatsApp</strong> (service édité par Meta Platforms) au salon. Aucune donnée n'est enregistrée sur le site ni revendue à des tiers.</p>
+    </article>
+    <article class="legal-card">
+      <h2>Conservation</h2>
+      <p>Le site ne dispose d'aucune base de données : il ne stocke aucune information. Les échanges reçus par le salon (WhatsApp, téléphone) sont conservés le temps nécessaire au traitement de votre demande.</p>
+    </article>
+    <article class="legal-card">
+      <h2>Cookies</h2>
+      <p>Ce site ne dépose <strong>aucun cookie publicitaire ou de suivi</strong>. Les polices d'écriture sont chargées depuis Google Fonts (qui peut enregistrer votre adresse IP pour servir les fichiers). Aucune carte interactive n'est intégrée : le lieu est affiché sous forme de lien, sans cookie tiers.</p>
+    </article>
+    <article class="legal-card">
+      <h2>Vos droits</h2>
+      <p>Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour l'exercer, contactez le salon au <a href="tel:+33669614755">06 69 61 47 55</a> ou via <a href="{INSTA}" target="_blank" rel="noopener">Instagram</a>.</p>
+    </article>
+    <div class="center-cta reveal-up"><a href="contact.html" class="btn btn-ghost">Retour au contact</a></div>
+  </section>
+{footer()}"""
+
 for fn, content in [("index.html", index), ("prestations.html", prestations),
-                    ("galerie.html", galerie), ("avis.html", avis), ("contact.html", contact)]:
+                    ("galerie.html", galerie), ("avis.html", avis), ("contact.html", contact),
+                    ("mentions-legales.html", mentions), ("confidentialite.html", confidentialite)]:
     with open(fn, "w", encoding="utf-8") as f:
         f.write(content)
     print("wrote", fn, len(content), "bytes")

@@ -395,3 +395,30 @@ section{position:relative}
 .qf-hint{color:var(--muted);font-size:.82rem;font-weight:300}
 @media(max-width:820px){.qf-grid{grid-template-columns:1fr}}
 @media(max-width:480px){.qf-row{grid-template-columns:1fr}}
+
+/* ============ PAGES LÉGALES ============ */
+.legal{max-width:840px;margin:0 auto;padding:clamp(30px,5vw,60px) clamp(20px,7vw,120px) clamp(60px,9vw,110px)}
+.legal-card{padding:30px 34px;margin-bottom:20px;border-radius:16px;
+  border:1px solid rgba(246,239,233,.09);background:linear-gradient(160deg,rgba(255,255,255,.035),transparent)}
+.legal-card h2{font-size:1.7rem;color:var(--or-clair);margin-bottom:14px}
+.legal-card p{color:var(--muted);font-weight:300;margin-bottom:10px}
+.legal-card a{color:var(--or);text-decoration:underline}
+.legal-todo{font-size:.85rem;color:var(--or);border-left:2px solid var(--or);padding-left:14px;font-style:italic}
+
+/* Carte contact sans cookie */
+.contact-map{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;text-align:center;
+  background:linear-gradient(150deg,#241b1f,#15101a);position:relative;overflow:hidden}
+.contact-map::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 30%,rgba(201,163,107,.18),transparent 60%),
+  radial-gradient(circle at 70% 75%,rgba(216,167,160,.14),transparent 60%)}
+.map-card{position:relative;z-index:1;display:flex;flex-direction:column;gap:8px;align-items:center;padding:30px}
+.map-pin{font-size:2.6rem;color:var(--or);line-height:1}
+.map-card strong{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--creme)}
+.map-card span{color:var(--muted);font-weight:300}
+.map-link{color:var(--or)!important;letter-spacing:1px;font-size:.85rem;text-transform:uppercase;margin-top:10px}
+.contact-map:hover .map-link{text-decoration:underline}
+
+/* Liens légaux footer */
+.footer-legal{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin:8px 0 2px}
+.footer-legal a{color:var(--muted);font-size:.82rem;transition:color .3s}
+.footer-legal a:hover{color:var(--or)}
