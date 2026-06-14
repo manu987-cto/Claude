@@ -13,10 +13,12 @@ const nav = document.getElementById('nav');
 burger.addEventListener('click', () => {
   burger.classList.toggle('open');
   nav.classList.toggle('open');
+  document.body.style.overflow = nav.classList.contains('open') ? 'hidden' : '';
 });
 nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   burger.classList.remove('open');
   nav.classList.remove('open');
+  document.body.style.overflow = '';
 }));
 
 // Curseur lueur

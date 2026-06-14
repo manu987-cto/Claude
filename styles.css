@@ -238,6 +238,14 @@ section{position:relative}
 @media(max-width:560px){.gallery-grid{grid-template-columns:1fr}.g-item.tall{grid-row:span 1}.stats{gap:24px}}
 @media(hover:none){.cursor-glow{display:none}}
 
+/* Correctif mobile : hero sous l'en-tête (évite le chevauchement du logo) */
+@media(max-width:760px){
+  .hero{min-height:auto;justify-content:flex-start;
+    padding-top:120px;padding-bottom:70px}
+  .hero-logo{width:108px;margin-bottom:18px}
+  .scroll-hint{display:none}
+}
+
 /* ============ MULTI-PAGE ADDITIONS ============ */
 .nav a.active{color:var(--creme)}
 .nav a.active:not(.nav-cta)::after{width:100%}
