@@ -39,40 +39,71 @@ regard_ids = {48, 49, 50, 51, 52, 53}
 cils_ids = (set(range(32, 74)) - regard_ids) | {75, 76}
 infos_ids = {1, 2, 3, 4, 5, 6}
 
+# Sous-catégories pour une lecture plus agréable (style carte de salon)
 CATS = [
-    ("Prothésie ongulaire", "Pose gel, remplissage, nail art, semi-permanent et soins des ongles.", sorted(ongles_ids)),
-    ("Extensions de cils", "Cil à cil, volume russe, hybride et effets sur-mesure pour un regard envoûtant.", sorted(cils_ids)),
-    ("Rehaussement & sourcils", "Rehaussement de cils, browlift, teinture : sublimez votre regard au naturel.", sorted(regard_ids)),
+    ("Prothésie ongulaire", "Pose gel, remplissage, nail art et soins des ongles.", [
+        ("Rallongements & remplissages", [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]),
+        ("Nail art", [23, 24, 25, 26, 27]),
+        ("Semi-permanent & gainage", [28, 29, 30, 31]),
+        ("Soins, déposes & finitions", [18, 19, 20, 21, 22, 74, 77]),
+    ]),
+    ("Extensions de cils", "Cil à cil, volume russe, hybride et effets sur-mesure.", [
+        ("Mixte / Hybride", [32, 33, 34, 35, 36]),
+        ("Volume Russe", [38, 39, 40, 41, 42]),
+        ("Volume Russe Intense", [43, 44, 45, 46, 47]),
+        ("Poses & formules", [63, 64, 65, 70, 71, 72, 73, 75, 76, 37]),
+        ("Effets & couleurs", [54, 55, 56, 57, 58, 59, 60, 61, 62]),
+        ("Remplissages express & déposes", [66, 67, 68, 69]),
+    ]),
+    ("Rehaussement & sourcils", "Rehaussement de cils, browlift et teinture pour un regard naturel.", [
+        ("Regard au naturel", [48, 49, 50, 51, 52, 53]),
+    ]),
 ]
 
-def card(s):
-    badge = "" if s["bookable"] else '<span class="card-tag">Sur rendez-vous tél.</span>'
-    desc = ""
+def price_num(s):
+    """Retourne le montant numérique d'une prestation, 0 si sur devis."""
+    p = s["price"]
+    import re
+    m = re.search(r"(\d+)", p) if p else None
+    return int(m.group(1)) if m and "€" in p else 0
+
+def menu_item(s):
+    tag = "" if s["bookable"] else '<span class="mi-tag">sur RDV tél.</span>'
+    price = html.escape(s["price"]) if s["price"] else "Sur devis"
+    meta = []
+    if s["dur"] and s["dur"] != "1min":
+        meta.append(f'⏱ {html.escape(s["dur"])}')
     if s["desc"]:
         d = html.escape(s["desc"]).replace("\n", " ").strip()
-        if len(d) > 230:
-            d = d[:227].rsplit(" ", 1)[0] + "…"
-        desc = f'<p class="card-desc">{d}</p>'
-    dur = f'<span class="card-dur">⏱ {html.escape(s["dur"])}</span>' if s["dur"] and s["dur"] != "1min" else ""
-    price = f'<span class="card-price">{html.escape(s["price"])}</span>' if s["price"] else '<span class="card-price muted">Sur devis</span>'
-    return f"""        <article class="prest-card reveal-up">
-          <div class="card-top"><h3>{html.escape(s['name'])}</h3>{price}</div>
-          <div class="card-meta">{dur}{badge}</div>
-          {desc}
-        </article>"""
+        if len(d) > 160:
+            d = d[:157].rsplit(" ", 1)[0] + "…"
+        meta.append(d)
+    meta_html = f'<p class="mi-meta">{" · ".join(meta)}</p>' if meta else ""
+    return f"""          <div class="menu-item reveal-up">
+            <div class="mi-head"><span class="mi-name">{html.escape(s['name'])}{tag}</span><span class="mi-dots"></span><span class="mi-price">{price}</span></div>
+            {meta_html}
+          </div>"""
 
 def prest_sections():
     out = []
-    for title, sub, ids in CATS:
-        cards = "\n".join(card(services[i]) for i in ids if i in services)
+    for title, sub, groups in CATS:
+        blocks = []
+        for gname, ids in groups:
+            items = "\n".join(menu_item(services[i]) for i in ids if i in services)
+            blocks.append(f"""        <div class="menu-group">
+          <h3 class="menu-group-title reveal-up">{html.escape(gname)}</h3>
+          <div class="menu-list">
+{items}
+          </div>
+        </div>""")
         out.append(f"""    <section class="prest-section">
       <div class="section-head">
         <p class="eyebrow reveal-up">{html.escape(title)}</p>
         <h2 class="reveal-up">{html.escape(title)}</h2>
         <p class="reveal-up sub">{html.escape(sub)}</p>
       </div>
-      <div class="prest-grid">
-{cards}
+      <div class="menu-wrap">
+{chr(10).join(blocks)}
       </div>
     </section>""")
     # infos box
@@ -85,6 +116,28 @@ def prest_sections():
       </div>
     </section>""")
     return "\n".join(out)
+
+def quote_options():
+    """Cases à cocher des prestations pour le formulaire de devis."""
+    blocks = []
+    for title, sub, groups in CATS:
+        rows = []
+        for gname, ids in groups:
+            for i in ids:
+                if i not in services:
+                    continue
+                s = services[i]
+                n = price_num(s)
+                label = html.escape(s["name"])
+                ptxt = html.escape(s["price"]) if s["price"] else "Sur devis"
+                rows.append(f'          <label class="opt"><input type="checkbox" data-price="{n}" data-name="{label}"><span class="opt-name">{label}</span><span class="opt-price">{ptxt}</span></label>')
+        blocks.append(f"""        <details class="opt-group">
+          <summary>{html.escape(title)}</summary>
+          <div class="opt-list">
+{chr(10).join(rows)}
+          </div>
+        </details>""")
+    return "\n".join(blocks)
 
 # ---------------------------------------------------------------- shared bits
 def head(title, desc, rel=""):
@@ -156,23 +209,14 @@ def page_hero(eyebrow, title, sub):
 
 # ---------------------------------------------------------------- gallery items
 LASH = {2, 8, 13, 16, 17}
-NAIL_CAPS = ["Nude élégant", "Nail art", "French moderne", "Bijoux dorés",
-             "Pose gel", "Chrome doré", "Finition raffinée", "Sur-mesure",
-             "Élégance dorée", "Bleu intense", "Création unique", "Détail précieux"]
 def gallery_items(ids, tall_lash=True):
     out = []
-    ni = 0
     for n in ids:
         fn = f"assets/gallery/g{n:02d}.jpg"
         if not os.path.exists(fn):
             continue
-        if n in LASH:
-            cap = "Beauté du regard"
-            cls = "g-item tall" if tall_lash else "g-item"
-        else:
-            cap = NAIL_CAPS[ni % len(NAIL_CAPS)]; ni += 1
-            cls = "g-item"
-        out.append(f'      <figure class="{cls} reveal-up"><img src="{fn}" alt="{cap} — Ongles by Sarah" loading="lazy"><figcaption>{cap}</figcaption></figure>')
+        cls = "g-item tall" if (tall_lash and n in LASH) else "g-item"
+        out.append(f'      <figure class="{cls} reveal-up"><img src="{fn}" alt="Réalisation Ongles by Sarah" loading="lazy" class="zoomable" tabindex="0"></figure>')
     return "\n".join(out)
 
 # ================================================================ build pages
@@ -372,6 +416,47 @@ contact = f"""{head('Contact & Réservation — Ongles_by.Sarah Vannes',
         <iframe title="Localisation Ongles_by.Sarah" src="https://www.google.com/maps?q=Parc%20Pompidou%2C%2056000%20Vannes&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
+  </section>
+
+  <section class="quote">
+    <div class="section-head">
+      <p class="eyebrow reveal-up">Demande &amp; devis</p>
+      <h2 class="reveal-up">Composez votre demande</h2>
+      <p class="reveal-up sub">Sélectionnez vos prestations, obtenez une estimation instantanée et envoyez votre demande à Sarah en un clic.</p>
+    </div>
+    <form class="quote-form reveal-up" id="quoteForm">
+      <div class="qf-grid">
+        <div class="qf-fields">
+          <div class="qf-row">
+            <label>Nom &amp; prénom *<input type="text" name="nom" required placeholder="Votre nom"></label>
+            <label>Téléphone *<input type="tel" name="tel" required placeholder="06 00 00 00 00"></label>
+          </div>
+          <div class="qf-row">
+            <label>E-mail<input type="email" name="email" placeholder="vous@email.com"></label>
+            <label>Date souhaitée<input type="text" name="date" placeholder="ex. semaine du 15"></label>
+          </div>
+          <label>Message<textarea name="message" rows="4" placeholder="Précisez vos envies, une inspiration, une question…"></textarea></label>
+        </div>
+        <div class="qf-select">
+          <p class="qf-label">Vos prestations</p>
+          <div class="opt-groups">
+{quote_options()}
+          </div>
+        </div>
+      </div>
+      <div class="qf-summary">
+        <div class="qf-total">
+          <span>Total estimé</span>
+          <strong id="quoteTotal">0 €</strong>
+        </div>
+        <p class="qf-note" id="quoteNote"></p>
+        <div class="qf-actions">
+          <button type="submit" class="btn btn-primary big">Envoyer ma demande</button>
+          <a href="{PLANITY}" target="_blank" rel="noopener" class="btn btn-ghost">Réserver sur Planity</a>
+        </div>
+        <p class="qf-hint">À l'envoi, votre récapitulatif s'ouvre dans WhatsApp pour être transmis directement à Sarah. L'estimation est indicative ; certaines prestations sont sur devis.</p>
+      </div>
+    </form>
   </section>
 {footer()}"""
 
